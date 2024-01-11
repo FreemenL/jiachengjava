@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ShopInformationMapper">
+    
+    <resultMap type="ShopInformation" id="ShopInformationResult">
+        <result property="shopId"    column="shop_id"    />
+        <result property="shopName"    column="shop_name"    />
+        <result property="storeName"    column="store_name"    />
+    </resultMap>
+
+    <sql id="selectShopInformationVo">
+        select shop_id, shop_name, store_name from shop_information
+    </sql>
+
+    <select id="selectShopInformationList" parameterType="ShopInformation" resultMap="ShopInformationResult">
+        <include refid="selectShopInformationVo"/>
+        <where>  
+            <if test="shopName != null  and shopName != ''"> and shop_name like concat('%', #{shopName}, '%')</if>
+            <if test="storeName != null  and storeName != ''"> and store_name like concat('%', #{storeName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectShopInformationByShopId" parameterType="Long" resultMap="ShopInformationResult">
+        <include refid="selectShopInformationVo"/>
+        where shop_id = #{shopId}
+    </select>
+        
+    <insert id="insertShopInformation" parameterType="ShopInformation" useGeneratedKeys="true" keyProperty="shopId">
+        insert into shop_information
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shopName != null">shop_name,</if>
+            <if test="storeName != null">store_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="shopName != null">#{shopName},</if>
+            <if test="storeName != null">#{storeName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateShopInformation" parameterType="ShopInformation">
+        update shop_information
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="shopName != null">shop_name = #{shopName},</if>
+            <if test="storeName != null">store_name = #{storeName},</if>
+        </trim>
+        where shop_id = #{shopId}
+    </update>
+
+    <delete id="deleteShopInformationByShopId" parameterType="Long">
+        delete from shop_information where shop_id = #{shopId}
+    </delete>
+
+    <delete id="deleteShopInformationByShopIds" parameterType="String">
+        delete from shop_information where shop_id in 
+        <foreach item="shopId" collection="array" open="(" separator="," close=")">
+            #{shopId}
+        </foreach>
+    </delete>
+</mapper>

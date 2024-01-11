@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.OrderListMapper">
+    
+    <resultMap type="OrderList" id="OrderListResult">
+        <result property="orderId"    column="order_id"    />
+        <result property="orderShopName"    column="order_shop_name"    />
+        <result property="orderProductName"    column="order_product_name"    />
+        <result property="orderSubjectName"    column="order_subject_name"    />
+        <result property="orderTimeName"    column="order_time_name"    />
+        <result property="orderNumber"    column="order_number"    />
+        <result property="orderNumbers"    column="order_numbers"    />
+        <result property="orderUserName"    column="order_user_name"    />
+        <result property="orderIdCardNumber"    column="order_id_card_number"    />
+        <result property="orderBirthday"    column="order_birthday"    />
+        <result property="orderSystemUser"    column="order_system_user"    />
+        <result property="orderPhone"    column="order_phone"    />
+        <result property="orderEmail"    column="order_email"    />
+        <result property="orderUserPayWay"    column="order_user_pay_way"    />
+        <result property="orderPrice"    column="order_price"    />
+        <result property="orderServersName"    column="order_servers_name"    />
+        <result property="orderDataTime"    column="order_data_time"    />
+        <result property="orderExtends"    column="order_extends"    />
+    </resultMap>
+
+    <sql id="selectOrderListVo">
+        select order_id, order_shop_name, order_product_name, order_subject_name, order_time_name, order_number, order_numbers, order_user_name, order_id_card_number, order_birthday, order_system_user, order_phone, order_email, order_user_pay_way, order_price, order_servers_name, order_data_time, order_extends from order_list
+    </sql>
+
+    <select id="selectOrderListList" parameterType="OrderList" resultMap="OrderListResult">
+        <include refid="selectOrderListVo"/>
+        <where>  
+            <if test="orderShopName != null  and orderShopName != ''"> and order_shop_name like concat('%', #{orderShopName}, '%')</if>
+            <if test="orderProductName != null  and orderProductName != ''"> and order_product_name like concat('%', #{orderProductName}, '%')</if>
+            <if test="orderSubjectName != null  and orderSubjectName != ''"> and order_subject_name like concat('%', #{orderSubjectName}, '%')</if>
+            <if test="orderTimeName != null  and orderTimeName != ''"> and order_time_name like concat('%', #{orderTimeName}, '%')</if>
+            <if test="orderNumber != null  and orderNumber != ''"> and order_number = #{orderNumber}</if>
+            <if test="orderNumbers != null  and orderNumbers != ''"> and order_numbers = #{orderNumbers}</if>
+            <if test="orderUserName != null  and orderUserName != ''"> and order_user_name like concat('%', #{orderUserName}, '%')</if>
+            <if test="orderIdCardNumber != null  and orderIdCardNumber != ''"> and order_id_card_number = #{orderIdCardNumber}</if>
+            <if test="orderBirthday != null  and orderBirthday != ''"> and order_birthday = #{orderBirthday}</if>
+            <if test="orderSystemUser != null  and orderSystemUser != ''"> and order_system_user = #{orderSystemUser}</if>
+            <if test="orderPhone != null  and orderPhone != ''"> and order_phone = #{orderPhone}</if>
+            <if test="orderEmail != null  and orderEmail != ''"> and order_email = #{orderEmail}</if>
+            <if test="orderUserPayWay != null  and orderUserPayWay != ''"> and order_user_pay_way = #{orderUserPayWay}</if>
+            <if test="orderPrice != null  and orderPrice != ''"> and order_price = #{orderPrice}</if>
+            <if test="orderServersName != null  and orderServersName != ''"> and order_servers_name like concat('%', #{orderServersName}, '%')</if>
+            <if test="orderDataTime != null "> and order_data_time = #{orderDataTime}</if>
+            <if test="orderExtends != null  and orderExtends != ''"> and order_extends = #{orderExtends}</if>
+        </where>
+    </select>
+    
+    <select id="selectOrderListByOrderId" parameterType="Long" resultMap="OrderListResult">
+        <include refid="selectOrderListVo"/>
+        where order_id = #{orderId}
+    </select>
+        
+    <insert id="insertOrderList" parameterType="OrderList" useGeneratedKeys="true" keyProperty="orderId">
+        insert into order_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderShopName != null">order_shop_name,</if>
+            <if test="orderProductName != null">order_product_name,</if>
+            <if test="orderSubjectName != null">order_subject_name,</if>
+            <if test="orderTimeName != null">order_time_name,</if>
+            <if test="orderNumber != null">order_number,</if>
+            <if test="orderNumbers != null">order_numbers,</if>
+            <if test="orderUserName != null">order_user_name,</if>
+            <if test="orderIdCardNumber != null">order_id_card_number,</if>
+            <if test="orderBirthday != null">order_birthday,</if>
+            <if test="orderSystemUser != null">order_system_user,</if>
+            <if test="orderPhone != null">order_phone,</if>
+            <if test="orderEmail != null">order_email,</if>
+            <if test="orderUserPayWay != null">order_user_pay_way,</if>
+            <if test="orderPrice != null">order_price,</if>
+            <if test="orderServersName != null">order_servers_name,</if>
+            <if test="orderDataTime != null">order_data_time,</if>
+            <if test="orderExtends != null">order_extends,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderShopName != null">#{orderShopName},</if>
+            <if test="orderProductName != null">#{orderProductName},</if>
+            <if test="orderSubjectName != null">#{orderSubjectName},</if>
+            <if test="orderTimeName != null">#{orderTimeName},</if>
+            <if test="orderNumber != null">#{orderNumber},</if>
+            <if test="orderNumbers != null">#{orderNumbers},</if>
+            <if test="orderUserName != null">#{orderUserName},</if>
+            <if test="orderIdCardNumber != null">#{orderIdCardNumber},</if>
+            <if test="orderBirthday != null">#{orderBirthday},</if>
+            <if test="orderSystemUser != null">#{orderSystemUser},</if>
+            <if test="orderPhone != null">#{orderPhone},</if>
+            <if test="orderEmail != null">#{orderEmail},</if>
+            <if test="orderUserPayWay != null">#{orderUserPayWay},</if>
+            <if test="orderPrice != null">#{orderPrice},</if>
+            <if test="orderServersName != null">#{orderServersName},</if>
+            <if test="orderDataTime != null">#{orderDataTime},</if>
+            <if test="orderExtends != null">#{orderExtends},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOrderList" parameterType="OrderList">
+        update order_list
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderShopName != null">order_shop_name = #{orderShopName},</if>
+            <if test="orderProductName != null">order_product_name = #{orderProductName},</if>
+            <if test="orderSubjectName != null">order_subject_name = #{orderSubjectName},</if>
+            <if test="orderTimeName != null">order_time_name = #{orderTimeName},</if>
+            <if test="orderNumber != null">order_number = #{orderNumber},</if>
+            <if test="orderNumbers != null">order_numbers = #{orderNumbers},</if>
+            <if test="orderUserName != null">order_user_name = #{orderUserName},</if>
+            <if test="orderIdCardNumber != null">order_id_card_number = #{orderIdCardNumber},</if>
+            <if test="orderBirthday != null">order_birthday = #{orderBirthday},</if>
+            <if test="orderSystemUser != null">order_system_user = #{orderSystemUser},</if>
+            <if test="orderPhone != null">order_phone = #{orderPhone},</if>
+            <if test="orderEmail != null">order_email = #{orderEmail},</if>
+            <if test="orderUserPayWay != null">order_user_pay_way = #{orderUserPayWay},</if>
+            <if test="orderPrice != null">order_price = #{orderPrice},</if>
+            <if test="orderServersName != null">order_servers_name = #{orderServersName},</if>
+            <if test="orderDataTime != null">order_data_time = #{orderDataTime},</if>
+            <if test="orderExtends != null">order_extends = #{orderExtends},</if>
+        </trim>
+        where order_id = #{orderId}
+    </update>
+
+    <delete id="deleteOrderListByOrderId" parameterType="Long">
+        delete from order_list where order_id = #{orderId}
+    </delete>
+
+    <delete id="deleteOrderListByOrderIds" parameterType="String">
+        delete from order_list where order_id in 
+        <foreach item="orderId" collection="array" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </delete>
+</mapper>

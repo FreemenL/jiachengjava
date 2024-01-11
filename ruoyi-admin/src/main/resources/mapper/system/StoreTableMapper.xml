@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.StoreTableMapper">
+    
+    <resultMap type="StoreTable" id="StoreTableResult">
+        <result property="storeId"    column="store_id"    />
+        <result property="storeName"    column="store_name"    />
+        <result property="storeComment"    column="store_comment"    />
+        <result property="storeToken"    column="store_token"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectStoreTableVo">
+        select store_id, store_name, store_comment, store_token, create_by, create_time, status from store_table
+    </sql>
+
+    <select id="selectStoreTableList" parameterType="StoreTable" resultMap="StoreTableResult">
+        <include refid="selectStoreTableVo"/>
+        <where>  
+            <if test="storeName != null  and storeName != ''"> and store_name like concat('%', #{storeName}, '%')</if>
+            <if test="storeComment != null  and storeComment != ''"> and store_comment = #{storeComment}</if>
+            <if test="storeToken != null  and storeToken != ''"> and store_token = #{storeToken}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectStoreTableByStoreId" parameterType="Long" resultMap="StoreTableResult">
+        <include refid="selectStoreTableVo"/>
+        where store_id = #{storeId}
+    </select>
+        
+    <insert id="insertStoreTable" parameterType="StoreTable" useGeneratedKeys="true" keyProperty="storeId">
+        insert into store_table
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="storeName != null">store_name,</if>
+            <if test="storeComment != null">store_comment,</if>
+            <if test="storeToken != null">store_token,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="status != null and status != ''">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="storeName != null">#{storeName},</if>
+            <if test="storeComment != null">#{storeComment},</if>
+            <if test="storeToken != null">#{storeToken},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="status != null and status != ''">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStoreTable" parameterType="StoreTable">
+        update store_table
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="storeName != null">store_name = #{storeName},</if>
+            <if test="storeComment != null">store_comment = #{storeComment},</if>
+            <if test="storeToken != null">store_token = #{storeToken},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+        </trim>
+        where store_id = #{storeId}
+    </update>
+
+    <delete id="deleteStoreTableByStoreId" parameterType="Long">
+        delete from store_table where store_id = #{storeId}
+    </delete>
+
+    <delete id="deleteStoreTableByStoreIds" parameterType="String">
+        delete from store_table where store_id in 
+        <foreach item="storeId" collection="array" open="(" separator="," close=")">
+            #{storeId}
+        </foreach>
+    </delete>
+</mapper>
